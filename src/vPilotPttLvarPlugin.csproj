@@ -1,0 +1,30 @@
+﻿<Project Sdk="Microsoft.NET.Sdk" InitialTargets="ValidateVPilot">
+
+   <PropertyGroup>
+      <OutputType>library</OutputType>
+      <TargetFramework>net472</TargetFramework>
+      <ImplicitUsings>disable</ImplicitUsings>
+      <Nullable>enable</Nullable>
+      <LangVersion>latest</LangVersion>
+      <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>      
+      <PlatformTarget>x86</PlatformTarget>
+      <VPilotPath Condition="'$(VPilotPath)' == ''">$(registry:HKEY_CURRENT_USER\Software\vPilot@Install_Dir)</VPilotPath>
+   </PropertyGroup>
+
+   <ItemGroup>
+      <Reference Include="Microsoft.FlightSimulator.SimConnect">         
+         <HintPath>$(VPilotPath)\Microsoft.FlightSimulator.SimConnect.dll</HintPath>
+         <Private>false</Private>
+      </Reference>
+      <Reference Include="RossCarlson.Vatsim.Vpilot.Plugins">
+         <HintPath>$(VPilotPath)\RossCarlson.Vatsim.Vpilot.Plugins.dll</HintPath>
+         <Private>false</Private>
+      </Reference>      
+   </ItemGroup>
+
+   <Target Name="ValidateVPilot">
+      <Error Condition="'$(VPilotPath)' == ''" Text="Unable to find VPilot installation. Set the VPilotPath property to the directory of VPilot when building." />
+      <Message Text="Found VPilot installation at '$(VPilotPath)'" Importance="high" />
+      
+   </Target>
+</Project>
